@@ -2,15 +2,17 @@
 {
 	data = 
 	{
-		ui = true
-		volume = 0.05
+		ui = false
+		volume = 0.25
 		volumerandom = 0.0
 		pitch = 1.0
-		pitchrandom = 0.0
+		pitchrandom = 0.2
 		distancemax = 2000.0
 		sounds = 
 		[
-			"sounds/zombiemusic.vsnd",
+			"sounds/death_00.ln55.pc.snd.vsnd",
+			"sounds/death_01.ln55.pc.snd.vsnd",
+			"sounds/death_04.ln55.pc.snd.vsnd",
 		]
 		selectionmode = "3"
 	}

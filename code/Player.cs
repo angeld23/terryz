@@ -7,6 +7,7 @@ using System.Threading;
 partial class DeathmatchPlayer : Player
 {
 	TimeSince timeSinceDropped;
+	public float LastSpawnTime { get; private set; }
 
 	public bool SupressPickupNotices { get; private set; }
 
@@ -18,6 +19,8 @@ partial class DeathmatchPlayer : Player
 	public override void Respawn()
 	{
 		SetModel( "models/citizen/citizen.vmdl" );
+
+		LastSpawnTime = Time.Now;
 
 		Controller = new WalkController();
 		Animator = new StandardPlayerAnimator();

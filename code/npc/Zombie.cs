@@ -68,15 +68,20 @@ public class Zombie : BaseNpc
 		}
 
 		var ignoreZDist = (targetPos.WithZ( 0 ) - this.Position.WithZ( 0 )).Length;
+		var timeSinceSpawn = Time.Now - ( (DeathmatchPlayer)closest).LastSpawnTime;
 
-		// deal damage if close enough and the last attack was long enough ago
-		if ( dist < 150 && ignoreZDist < 30 && (Time.Now - lastAttack) > 1)
+		// deal damage if close enough, the last attack was long enough ago, and the player has been alive for more than 5 seconds
+
+		if ( dist < 150 &&
+		     ignoreZDist < 30 &&
+		     (Time.Now - lastAttack) > 1 &&
+		     timeSinceSpawn > 5 &&
+		     closest.LifeState == LifeState.Alive )
 		{
 			var game = (DeathmatchGame)Game.Current;
 
 			DoDamage( closest, 10 );
 			game.PlaySoundFromEntity("zombiebite", this);
-			//SoundPlayer.PlaySoundFromEntity( "zombiebite", this );
 			lastAttack = Time.Now;
 		}
 
@@ -86,8 +91,10 @@ public class Zombie : BaseNpc
 
 	public override void OnKilled()
 	{
-		new ZombieRagdoll( this );
 		LastAttacker.Client.AddInt( "kills" );
+
+		var game = (DeathmatchGame)Game.Current;
+		game.PlaySoundFromEntity( "zombiedeath", new ZombieRagdoll( this ).Ragdoll );
 
 		base.OnKilled();
 	}

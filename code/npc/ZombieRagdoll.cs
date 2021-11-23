@@ -5,40 +5,40 @@ public class ZombieRagdoll
 {
 	private const float fadeStartDelay = 5;
 	private const float fadeTime = 2;
-	private ModelEntity ragdoll;
+	public ModelEntity Ragdoll;
 	private float timeSpawned;
 
 	public ZombieRagdoll( ModelEntity entity )
 	{
 		Event.Register( this );
 
-		ragdoll = new ModelEntity( entity.GetModelName() );
-		ragdoll.Transform = entity.Transform;
-		ragdoll.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		Ragdoll = new ModelEntity( entity.GetModelName() );
+		Ragdoll.Transform = entity.Transform;
+		Ragdoll.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 
-		ragdoll.AngularVelocity = entity.AngularVelocity;
-		ragdoll.RenderColor = entity.RenderColor;
-		ragdoll.SetMaterialGroup( entity.GetMaterialGroup() );
+		Ragdoll.AngularVelocity = entity.AngularVelocity;
+		Ragdoll.RenderColor = entity.RenderColor;
+		Ragdoll.SetMaterialGroup( entity.GetMaterialGroup() );
 
-		for ( var i = 0; i < ragdoll.BoneCount; i++ )
+		for ( var i = 0; i < Ragdoll.BoneCount; i++ )
 		{
-			ragdoll.SetBoneTransform( i, entity.GetBoneTransform( i ) );
-			var physBody = ragdoll.GetBonePhysicsBody( i );
+			Ragdoll.SetBoneTransform( i, entity.GetBoneTransform( i ) );
+			var physBody = Ragdoll.GetBonePhysicsBody( i );
 			if ( physBody != null )
 			{
 				physBody.Velocity = -entity.Velocity * 30;
 			}
 		}
 
-		ragdoll.SetInteractsAs( CollisionLayer.Debris );
-		ragdoll.SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
-		ragdoll.SetInteractsExclude( CollisionLayer.Player | CollisionLayer.Debris );
+		Ragdoll.SetInteractsAs( CollisionLayer.Debris );
+		Ragdoll.SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
+		Ragdoll.SetInteractsExclude( CollisionLayer.Player | CollisionLayer.Debris );
 
 		foreach ( Entity child in entity.Children )
 		{
 			if ( child is ModelEntity m )
 			{
-				new ModelEntity( m.GetModelName(), ragdoll );
+				new ModelEntity( m.GetModelName(), Ragdoll );
 			}
 		}
 
@@ -57,14 +57,14 @@ public class ZombieRagdoll
 
 		if ( timeExisted > fadeTime + fadeStartDelay )
 		{
-			ragdoll.Delete();
+			Ragdoll.Delete();
 			return;
 		}
 
 		var alpha = timeExisted.LerpInverse( fadeStartDelay + fadeTime, fadeStartDelay );
-		var c = ragdoll.RenderColor;
-		ragdoll.RenderColor = new Color(c.r, c.g, c.b, alpha );
-		foreach ( Entity child in ragdoll.Children )
+		var c = Ragdoll.RenderColor;
+		Ragdoll.RenderColor = new Color(c.r, c.g, c.b, alpha );
+		foreach ( Entity child in Ragdoll.Children )
 		{
 			if ( child is ModelEntity m )
 			{
