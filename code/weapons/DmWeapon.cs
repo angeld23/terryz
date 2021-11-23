@@ -169,6 +169,7 @@ partial class BaseDmWeapon : BaseWeapon, IRespawnableEntity
 
 				if ( !IsServer ) continue;
 				if ( !tr.Entity.IsValid() ) continue;
+				if ( tr.Entity is not Zombie) continue;
 
 				var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
 					.UsingTraceResult( tr )

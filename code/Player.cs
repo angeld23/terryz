@@ -38,9 +38,9 @@ partial class DeathmatchPlayer : Player
 		Inventory.Add( new SMG() );
 		Inventory.Add( new Crossbow() );
 
-		GiveAmmo( AmmoType.Pistol, 100 );
-		GiveAmmo( AmmoType.Buckshot, 8 );
-		GiveAmmo( AmmoType.Crossbow, 4 );
+		GiveAmmo( AmmoType.Pistol, 999999 );
+		GiveAmmo( AmmoType.Buckshot, 999999 );
+		GiveAmmo( AmmoType.Crossbow, 999999 );
 
 		SupressPickupNotices = false;
 		Health = 100;
@@ -86,6 +86,15 @@ partial class DeathmatchPlayer : Player
 
 		if ( LifeState != LifeState.Alive )
 			return;
+
+		if ( Position.z < -10000 )
+		{
+			if ( IsServer )
+			{
+				OnKilled();
+			}
+			return;
+		}
 
 		TickPlayerUse();
 

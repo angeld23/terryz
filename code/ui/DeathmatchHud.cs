@@ -41,4 +41,12 @@ public partial class DeathmatchHud : HudEntity<RootPanel>
 	{
 		Host.AssertClient();
 	}
+
+	[ClientRpc]
+	public void ShowScoreIndicator( float score )
+	{
+		RootPanel
+			.AddChild<ScoreIndicator>()
+			.Score = score;
+	}
 }
